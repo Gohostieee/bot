@@ -1,5 +1,6 @@
 import { startBot } from './bot';
 import elevenLabsService from './services/elevenlabs';
+import { startPingService, stopPingService } from './services/ping';
 import logger from './utils/logger';
 
 async function main() {
@@ -10,6 +11,9 @@ async function main() {
     await elevenLabsService.validateApiKey();
 
     await startBot();
+
+    // Start the ping service for keep-alive
+    startPingService();
   } catch (error) {
     logger.error('Failed to start bot', { error });
     process.exit(1);
@@ -18,11 +22,13 @@ async function main() {
 
 process.on('SIGINT', () => {
   logger.info('Received SIGINT, shutting down gracefully...');
+  stopPingService();
   process.exit(0);
 });
 
 process.on('SIGTERM', () => {
   logger.info('Received SIGTERM, shutting down gracefully...');
+  stopPingService();
   process.exit(0);
 });
 

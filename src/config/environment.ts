@@ -12,6 +12,7 @@ interface EnvironmentConfig {
   };
   nodeEnv: string;
   logLevel: string;
+  pingUrl?: string;
 }
 
 function validateEnvironment(): EnvironmentConfig {
@@ -32,6 +33,7 @@ function validateEnvironment(): EnvironmentConfig {
     },
     nodeEnv: process.env.NODE_ENV || 'development',
     logLevel: process.env.LOG_LEVEL || 'info',
+    pingUrl: process.env.PING_URL,
   };
 }
 
